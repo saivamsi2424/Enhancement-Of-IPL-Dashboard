@@ -1,0 +1,23 @@
+/* Write your CSS here */
+.ipl-card-container {
+  display: flex;
+  flex-direction: row;
+  border-style: none;
+  background-color: #ffffff33;
+  border-radius: 8px;
+  margin: 4px;
+  height: 200px;
+  width: 500px;
+  align-items: center;
+}
+.card-image {
+  height: 180px;
+  width: 120px;
+  margin: 5px;
+}
+.card-heading {
+  color: white;
+  font-size: 30px;
+  text-align: center;
+  font-family: 'BreeSerif';
+}
