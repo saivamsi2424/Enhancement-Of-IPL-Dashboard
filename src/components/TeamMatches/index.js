@@ -1,9 +1,10 @@
 // Write your code here
 import {Component} from 'react'
+import {Link} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 
 import LatestMatch from '../LatestMatch'
-
+import PieChart from '../PieChart'
 import MatchCard from '../MatchCard'
 
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
@@ -60,6 +61,23 @@ class TeamMatches extends Component {
     console.log(updatedData)
   }
 
+  getNoOfMatches = value => {
+    const {teamDetailsList} = this.state
+    const {latestMatchDetails, recentMatches} = teamDetailsList
+
+    const currentMatch = value === latestMatchDetails.matchStatus ? 1 : 0
+    const result =
+      recentMatches.filter(match => match.matchStatus === value).length +
+      currentMatch
+    return result
+  }
+
+  getDataOfMatches = () => [
+    {name: 'Won', value: this.getNoOfMatches('Won')},
+    {name: 'Lost', value: this.getNoOfMatches('Lost')},
+    {name: 'Draw', value: this.getNoOfMatches('Draw')},
+  ]
+
   render() {
     const {teamDetailsList, isLoading} = this.state
     const {teamBannerUrl, latestMatchDetails, recentMatches} = teamDetailsList
@@ -69,6 +87,12 @@ class TeamMatches extends Component {
       </div>
     ) : (
       <div className="main-teamMatch-container">
+        <Link to="/">
+          <button type="button" className="back-button">
+            Back
+          </button>
+        </Link>
+        <PieChart data={this.getDataOfMatches()} />
         <img src={teamBannerUrl} alt="team banner" className="banner-image" />
         <p className="latest-matches">Latest Matches</p>
         <LatestMatch matchdetails={latestMatchDetails} />
