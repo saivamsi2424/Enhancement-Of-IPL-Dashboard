@@ -32,7 +32,7 @@ class Home extends Component {
   render() {
     const {iplCardsList, isLoading} = this.state
     return isLoading ? (
-      <div data-testid="loader">
+      <div testid="loader">
         <Loader type="Oval" color="#ffffff" height={50} width={50} />
       </div>
     ) : (

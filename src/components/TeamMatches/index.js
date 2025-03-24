@@ -15,6 +15,9 @@ class TeamMatches extends Component {
   state = {
     teamDetailsList: {},
     isLoading: true,
+    won: 0,
+    lost: 0,
+    draw: 0,
   }
 
   componentDidMount() {
@@ -56,33 +59,36 @@ class TeamMatches extends Component {
         matchStatus: eachItem.match_status,
       })),
     }
+    let won = 0
+    let lost = 0
+    let draw = 0
 
-    this.setState({teamDetailsList: updatedData, isLoading: false})
+    const {recentMatches} = updatedData
+    recentMatches.forEach(matching => {
+      if (matching.matchStatus === 'Won') {
+        won += 1
+      } else if (matching.matchStatus === 'Lost') {
+        lost += 1
+      } else {
+        draw += 1
+      }
+    })
+
+    this.setState({
+      teamDetailsList: updatedData,
+      isLoading: false,
+      won,
+      draw,
+      lost,
+    })
     console.log(updatedData)
   }
 
-  getNoOfMatches = value => {
-    const {teamDetailsList} = this.state
-    const {latestMatchDetails, recentMatches} = teamDetailsList
-
-    const currentMatch = value === latestMatchDetails.matchStatus ? 1 : 0
-    const result =
-      recentMatches.filter(match => match.matchStatus === value).length +
-      currentMatch
-    return result
-  }
-
-  getDataOfMatches = () => [
-    {name: 'Won', value: this.getNoOfMatches('Won')},
-    {name: 'Lost', value: this.getNoOfMatches('Lost')},
-    {name: 'Draw', value: this.getNoOfMatches('Draw')},
-  ]
-
   render() {
-    const {teamDetailsList, isLoading} = this.state
+    const {teamDetailsList, isLoading, won, draw, lost} = this.state
     const {teamBannerUrl, latestMatchDetails, recentMatches} = teamDetailsList
     return isLoading ? (
-      <div data-testid="loader">
+      <div testid="loader">
         <Loader type="Oval" color="#ffffff" height={50} width={50} />
       </div>
     ) : (
@@ -92,7 +98,7 @@ class TeamMatches extends Component {
             Back
           </button>
         </Link>
-        <PieChart data={this.getDataOfMatches()} />
+        <PieChart won={won} lost={lost} draw={draw} />
         <img src={teamBannerUrl} alt="team banner" className="banner-image" />
         <p className="latest-matches">Latest Matches</p>
         <LatestMatch matchdetails={latestMatchDetails} />
