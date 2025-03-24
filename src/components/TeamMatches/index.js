@@ -88,7 +88,7 @@ class TeamMatches extends Component {
     const {teamDetailsList, isLoading, won, draw, lost} = this.state
     const {teamBannerUrl, latestMatchDetails, recentMatches} = teamDetailsList
     return isLoading ? (
-      <div testid="loader">
+      <div data-testid="loader">
         <Loader type="Oval" color="#ffffff" height={50} width={50} />
       </div>
     ) : (

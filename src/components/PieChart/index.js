@@ -8,8 +8,6 @@ import {
 
 import './index.css'
 
-const COLORS = ['#00C49F', '#FF8042', '#FFBB28']
-
 const PieChart = props => {
   const {won, draw, lost} = props
   console.log(won, draw, lost, 'piechart data')
